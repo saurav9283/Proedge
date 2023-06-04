@@ -18,22 +18,66 @@ export default class App extends React.Component {
     };
   }
 
+  // loadContacts = async () => {
+  //   const permission = await Expo.Permissions.askAsync(
+  //     Expo.Permissions.CONTACTS
+  //   );
+
+  //   if (permission.status !== 'granted') {
+  //     return;
+  //   }
+
+  //   const { data } = await Contacts.getContactsAsync({
+  //     fields: [Contacts.Fields.PhoneNumbers, Contacts.Fields.Emails]
+  //   });
+
+  //   console.log(data);
+  //   this.setState({ contacts: data, inMemoryContacts: data, isLoading: false });
+  // };
+
+
+  // loadContacts = async () => {
+  //   try {
+  //     const permission = await Expo.Permissions.askAsync(Expo.Permissions.CONTACTS);
+  
+  //     if (permission.status !== 'granted') {
+  //       return;
+  //     }
+  
+  //     const { data } = await Contacts.getContactsAsync({
+  //       fields: [Contacts.Fields.PhoneNumbers, Contacts.Fields.Emails]
+  //     });
+  
+  //     console.log(data);
+  //     this.setState({ contacts: data, inMemoryContacts: data, isLoading: false });
+  //   } catch (error) {
+  //     console.error('Error loading contacts:', error);
+  //     // Perform any necessary error handling here, such as showing an error message to the user
+  //   }
+  // };
+
+
   loadContacts = async () => {
-    const permission = await Expo.Permissions.askAsync(
-      Expo.Permissions.CONTACTS
-    );
-
-    if (permission.status !== 'granted') {
-      return;
+    try {
+      const permission = await Expo.Permissions.askAsync(Expo.Permissions.CONTACTS);
+  
+      if (permission.status !== 'granted') {
+        return;
+      }
+  
+      const { data } = await Contacts.getContactsAsync({
+        fields: [Contacts.Fields.PhoneNumbers]
+      });
+  
+      console.log(data);
+      this.setState({ contacts: data, inMemoryContacts: data, isLoading: false });
+    } catch (error) {
+      console.error('Error loading contacts:', error);
+      // Perform any necessary error handling here, such as showing an error message to the user
     }
-
-    const { data } = await Contacts.getContactsAsync({
-      fields: [Contacts.Fields.PhoneNumbers, Contacts.Fields.Emails]
-    });
-
-    console.log(data);
-    this.setState({ contacts: data, inMemoryContacts: data, isLoading: false });
   };
+  
+  
 
   componentDidMount() {
     this.setState({ isLoading: true });
@@ -128,3 +172,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   }
 });
+
